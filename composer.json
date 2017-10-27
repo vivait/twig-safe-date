@@ -1,0 +1,29 @@
+{
+    "name": "vivait/twig-safe-date",
+    "description": "A safe date function in twig that will not set null dates to today.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matt Brunt",
+            "email": "matt.brunt@vivait.co.uk"
+        }
+    ],
+    "require": {
+        "twig/twig": "^1.27|^2.0",
+        "php": ">=5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vivait\\TwigSafeDate\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Vivait\\TwigSafeDateExtension\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.4"
+    }
+}
