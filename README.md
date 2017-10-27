@@ -1,5 +1,7 @@
 # Twig Safe Date Extension
 
+[![Build Status](https://travis-ci.org/vivait/twig-safe-date.svg?branch=master)](https://travis-ci.org/vivait/twig-safe-date)
+
 Simple filter in twig to help avoid problems with things like: `{{ null|date('Y-m-d') }}`
 
 There are ways around it using twig - the [documentation](https://twig.symfony.com/doc/2.x/filters/date.html) even states:
