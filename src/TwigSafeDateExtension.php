@@ -2,6 +2,9 @@
 
 namespace Vivait\TwigSafeDate;
 
+use DateInterval;
+use Twig_Environment;
+
 class TwigSafeDateExtension extends \Twig_Extension
 {
 
@@ -12,51 +15,42 @@ class TwigSafeDateExtension extends \Twig_Extension
     {
         return [
             new \Twig_Filter(
-                'safedate',
-                [$this, 'safeDate']
-            ),
-            new \Twig_Filter(
-                'safeDate',
-                [$this, 'safeDate']
+                'date',
+                [$this, 'safeDateFormatFilter'],
+                ['needs_environment' => true]
             ),
         ];
     }
 
     /**
-     * @param \DateTimeInterface|string|array|null $date
-     * @param string                               $format
-     * @param string                               $contentIfNull
+     * @param Twig_Environment $env
+     * @param                  $date
+     * @param null             $format
+     * @param null             $timezone
+     * @param string           $contentIfNull
      *
      * @return string
      */
-    public function safeDate($date, $format = 'F j, Y H:i.', $contentIfNull = '-')
-    {
+    public function safeDateFormatFilter(
+        Twig_Environment $env,
+        $date,
+        $format = null,
+        $timezone = null,
+        $contentIfNull = '-'
+    ) {
         if ($date === null) {
             return $contentIfNull;
         }
 
-        if ($date instanceof \DateTimeInterface) {
+        if (null === $format) {
+            $formats = $env->getExtension('Twig_Extension_Core')->getDateFormat();
+            $format = $date instanceof DateInterval ? $formats[1] : $formats[0];
+        }
+
+        if ($date instanceof DateInterval) {
             return $date->format($format);
         }
 
-        $timezone = null;
-        /*
-         * If you've json_decoded a DateTimeInterface object (that was previously json_encoded), you'll have a key of `date` in it
-         */
-        if (is_array($date) && isset($date['date'])) {
-            $date = $date['date'];
-            $timezone = isset($date['timezone']) ? new \DateTimeZone($date['timezone']) : null;
-        }
-
-        if (is_string($date) && trim($date) !== '') {
-            try {
-                return (new \DateTimeImmutable($date, $timezone))->format($format);
-            } catch (\Exception $e) {
-                return $contentIfNull;
-            }
-        }
-
-        // not sure what it is here, just return the content if it were null
-        return $contentIfNull;
+        return twig_date_converter($env, $date, $timezone)->format($format);
     }
 }

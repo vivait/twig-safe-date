@@ -23,17 +23,9 @@ class TwigSafeDateExtensionTest extends TestCase
     public function twig_templating_provider()
     {
         return [
-            ['{{ "2016-10-25"|safedate("d/m/Y") }}', '25/10/2016'],
-            ['{{ myDateVariableHere|safedate("d/m/Y") }}', '25/10/2016', ['myDateVariableHere' => ['date' => "2016-10-25"]]],
-            ['{{ null|safedate("d/m/Y") }}', '-'],
-            ['{{ null|safedate("d/m/Y", "*") }}', '*'],
-            ['{{ myDateVariableHere|safedate("d/m/Y") }}', '25/10/2016', ['myDateVariableHere' => new \DateTimeImmutable("2016-10-25")]],
-            // alternative `safeDate` usage
-            ['{{ "2016-10-25"|safeDate("d/m/Y") }}', '25/10/2016'],
-            ['{{ myDateVariableHere|safeDate("d/m/Y") }}', '25/10/2016', ['myDateVariableHere' => ['date' => "2016-10-25"]]],
-            ['{{ null|safeDate("d/m/Y") }}', '-'],
-            ['{{ null|safeDate("d/m/Y", "*") }}', '*'],
-            ['{{ myDateVariableHere|safeDate("d/m/Y") }}', '25/10/2016', ['myDateVariableHere' => new \DateTimeImmutable("2016-10-25")]],
+            ['{{ "2016-10-25"|date("d/m/Y", "Europe/London") }}', '25/10/2016'],
+            ['{{ null|date("d/m/Y") }}', '-'],
+            ['{{ null|date("d/m/Y", "Europe/London", "*") }}', '*'],
         ];
     }
 

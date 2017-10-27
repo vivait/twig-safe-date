@@ -28,26 +28,22 @@ $twig = new \Twig_Environment($loader);
 $twig->addExtension(new TwigSafeDateExtension);
 ```
 
-Once registered, you can use the filter `safedate` (or `safeDate`) to output dates.
+Once registered, you can use the filter `date` to output dates as before, with the change that: **null values will get turned into known content (default: `-`) rather than today's date**
 
-The default format is `'F j, Y H:i.'` (the same as the `date` filter in Twig)
+The default format is `'F j, Y H:i.'` (the same as the core `date` filter in Twig)
 
 ```
-{{ post.posted_at|safeDate }}
+{{ post.posted_at|date }}
 ```
 
 If you wish to change the format of the date, pass it a parameter with your preferred format:
 
 ```
-{{ post.posted_at|safeDate("d/m/Y") }}
+{{ post.posted_at|date("d/m/Y") }}
 ```
 
-If `post.posted_at` is `null`, then by default the filter will output `-`, if you wish to change this to a different value, pass a new default as the second parameter:
+If `post.posted_at` is `null`, then by default the filter will output `-`, if you wish to change this to a different value, pass a new default as the third parameter:
 
 ```
-{{ post.posted_at|safeDate("d/m/Y", "Content if null") }}
+{{ post.posted_at|date("d/m/Y", "Europe/London" "Content if null") }}
 ```
-
-A number of different types of values can be passed to the filter, it will accept a string, a `\DateTimeInterface` object, or even an array with a key of `date` (which is what you get if you `json_decode` a date that's previously been through `json_encode`)
-
-If for whatever reason it can't convert the value you give it to a date, it'll return the content as if it were null.
