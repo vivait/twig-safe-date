@@ -1,26 +1,34 @@
 <?php
 
-namespace Vivait\TwigSafeDate\Tests\Integration;
+declare(strict_types=1);
+
+namespace Vivait\TwigSafeDateExtension\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
+use Twig\TemplateWrapper;
 use Vivait\TwigSafeDate\TwigSafeDateExtension;
 
 class TwigSafeDateExtensionTest extends TestCase
 {
-
     /**
      * @test
-     * @dataProvider twig_templating_provider
+     * @dataProvider templateProvider
+     *
+     * @param string $template
+     * @param string $expectedOutput
+     * @param array $params
      */
-    public function it_can_be_registered_as_a_twig_extension_and_used_correctly($template, $expectedOutput, $params = [])
-    {
+    public function itCanBeRegisteredAsATwigExtensionAndUsedCorrectly(
+        string $template,
+        string $expectedOutput,
+        array $params = []
+    ): void {
         self::assertEquals($expectedOutput, $this->getTemplate($template)->render($params));
     }
 
-    /**
-     * @return array
-     */
-    public function twig_templating_provider()
+    public function templateProvider(): array
     {
         return [
             ['{{ "2016-10-25"|date("d/m/Y", "Europe/London") }}', '25/10/2016'],
@@ -29,16 +37,11 @@ class TwigSafeDateExtensionTest extends TestCase
         ];
     }
 
-    /**
-     * @param string $template
-     *
-     * @return \Twig_TemplateWrapper
-     */
-    public function getTemplate($template)
+    private function getTemplate(string $template): TemplateWrapper
     {
-        $loader = new \Twig_Loader_Array(['template' => $template]);
-        $twig = new \Twig_Environment($loader, ['debug' => true, 'cache' => false]);
-        $twig->addExtension(new TwigSafeDateExtension);
+        $loader = new ArrayLoader(['template' => $template]);
+        $twig = new Environment($loader, ['debug' => true, 'cache' => false]);
+        $twig->addExtension(new TwigSafeDateExtension());
 
         return $twig->load('template');
     }
