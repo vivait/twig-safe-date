@@ -1,49 +1,51 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vivait\TwigSafeDate;
 
 use DateInterval;
-use Twig_Environment;
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\CoreExtension;
+use Twig\TwigFilter;
 
-class TwigSafeDateExtension extends \Twig_Extension
+class TwigSafeDateExtension extends AbstractExtension
 {
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig_Filter(
+            new TwigFilter(
                 'date',
                 [$this, 'safeDateFormatFilter'],
-                ['needs_environment' => true]
+                ['needs_environment' => true],
             ),
         ];
     }
 
     /**
-     * @param Twig_Environment $env
-     * @param                  $date
-     * @param null             $format
-     * @param null             $timezone
-     * @param string           $contentIfNull
+     * @param Environment $env
+     * @param mixed $date
+     * @param null $format
+     * @param null $timezone
+     * @param string $contentIfNull
      *
      * @return string
      */
     public function safeDateFormatFilter(
-        Twig_Environment $env,
+        Environment $env,
         $date,
         $format = null,
         $timezone = null,
-        $contentIfNull = '-'
-    ) {
+        string $contentIfNull = '-'
+    ): string {
         if ($date === null) {
             return $contentIfNull;
         }
 
         if (null === $format) {
-            $formats = $env->getExtension('Twig_Extension_Core')->getDateFormat();
+            $formats = $env->getExtension(CoreExtension::class)->getDateFormat();
+
             $format = $date instanceof DateInterval ? $formats[1] : $formats[0];
         }
 
