@@ -30,12 +30,8 @@ jobs:
                     restore-keys: |
                         ${{ runner.os }}-php-
 
-            -   name: Add HTTP basic auth credentials
-                run: echo '${{ secrets.COMPOSER_AUTH }}' > $GITHUB_WORKSPACE/auth.json
-
-            -   name: Install dependencies
-                if: steps.composer-cache.outputs.cache-hit != 'true'
-                run: composer install --prefer-dist --no-progress --no-suggest
+            -   name: Download dependencies
+                uses: ramsey/composer-install@v1
 
             -   name: Run Psalm
                 run: ./vendor/bin/psalm --show-info=true --output-format=github --config=psalm.xml --threads=2
@@ -62,12 +58,8 @@ jobs:
                     restore-keys: |
                         ${{ runner.os }}-php-
 
-            -   name: Add HTTP basic auth credentials
-                run: echo '${{ secrets.COMPOSER_AUTH }}' > $GITHUB_WORKSPACE/auth.json
-
-            -   name: Install dependencies
-                if: steps.composer-cache.outputs.cache-hit != 'true'
-                run: composer install --prefer-dist --no-progress --no-suggest
+            -   name: Download dependencies
+                uses: ramsey/composer-install@v1
 
             -   name: Run PHPCS
                 run: ./vendor/bin/phpcs --report=checkstyle -q ./vendor/bin/phpcs --exclude=Generic.Files.LineLength,PSR1.Files.SideEffects --standard=PSR12 --colors ./src ./tests | cs2pr
