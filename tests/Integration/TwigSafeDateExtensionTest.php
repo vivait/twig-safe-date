@@ -18,7 +18,7 @@ class TwigSafeDateExtensionTest extends TestCase
      *
      * @param string $template
      * @param string $expectedOutput
-     * @param array $params
+     * @param array  $params
      */
     public function itCanBeRegisteredAsATwigExtensionAndUsedCorrectly(
         string $template,

@@ -10,6 +10,9 @@ use Twig\Extension\AbstractExtension;
 use Twig\Extension\CoreExtension;
 use Twig\TwigFilter;
 
+/**
+ * @psalm-api
+ */
 class TwigSafeDateExtension extends AbstractExtension
 {
     public function getFilters(): array
@@ -25,10 +28,10 @@ class TwigSafeDateExtension extends AbstractExtension
 
     /**
      * @param Environment $env
-     * @param mixed $date
-     * @param null $format
-     * @param null $timezone
-     * @param string $contentIfNull
+     * @param mixed       $date
+     * @param null        $format
+     * @param null        $timezone
+     * @param string      $contentIfNull
      *
      * @return string
      */
