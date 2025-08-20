@@ -26,28 +26,21 @@ class TwigSafeDateExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @param Environment $env
-     * @param mixed       $date
-     * @param null        $format
-     * @param null        $timezone
-     * @param string      $contentIfNull
-     *
-     * @return string
-     */
     public function safeDateFormatFilter(
         Environment $env,
-        $date,
-        $format = null,
-        $timezone = null,
+        mixed $date,
+        ?string $format = null,
+        ?string $timezone = null,
         string $contentIfNull = '-'
     ): string {
-        if ($date === null) {
+        if (empty($date)) {
             return $contentIfNull;
         }
 
+        $coreExtension = $env->getExtension(CoreExtension::class);
+
         if (null === $format) {
-            $formats = $env->getExtension(CoreExtension::class)->getDateFormat();
+            $formats = $coreExtension->getDateFormat();
 
             $format = $date instanceof DateInterval ? $formats[1] : $formats[0];
         }
@@ -56,6 +49,6 @@ class TwigSafeDateExtension extends AbstractExtension
             return $date->format($format);
         }
 
-        return twig_date_converter($env, $date, $timezone)->format($format);
+        return $coreExtension->formatDate($date, $format, $timezone);
     }
 }

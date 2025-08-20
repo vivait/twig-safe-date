@@ -12,7 +12,7 @@ jobs:
             fail-fast: false
             matrix:
                 operating-system: [ ubuntu-latest ]
-                php: [ '7.4', '8.2' ]
+                php: [ '8.3' ]
 
         steps:
             -   uses: actions/checkout@master
@@ -21,10 +21,11 @@ jobs:
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: ${{ matrix.php }}
-                    tools: flex
+                    tools: flex, composer
 
-            -   name: Download dependencies
-                uses: ramsey/composer-install@v1
+            -   name: Install dependencies
+                if: steps.composer-cache.outputs.cache-hit != 'true'
+                run: composer install --prefer-dist --no-progress --no-scripts
 
             -   name: Run test suite on PHP ${{ matrix.php }}
                 run: ./vendor/bin/phpunit

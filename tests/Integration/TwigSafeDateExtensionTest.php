@@ -32,6 +32,8 @@ class TwigSafeDateExtensionTest extends TestCase
     {
         return [
             ['{{ "2016-10-25"|date("d/m/Y", "Europe/London") }}', '25/10/2016'],
+            ['{{ ""|date("d/m/Y") }}', '-'],
+            ['{{ false|date("d/m/Y") }}', '-'],
             ['{{ null|date("d/m/Y") }}', '-'],
             ['{{ null|date("d/m/Y", "Europe/London", "*") }}', '*'],
         ];

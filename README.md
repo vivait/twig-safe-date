@@ -8,12 +8,12 @@ There are ways around it using twig - the [documentation](https://twig.symfony.c
 >
 > `{{ post.published_at is empty ? "" : post.published_at|date("m/d/Y") }}`
 
-But often, this is overlooked.
+But often, this is overlooked leading to erroneous information being displayed.
 
 ## Requirements
 
-* PHP >=7.4 or >= 8.2
-* Twig ^3.0
+* PHP = ^8.3
+* Twig ^3.10
 
 ## Installation & Usage
 
