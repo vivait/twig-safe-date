@@ -26,23 +26,14 @@ class TwigSafeDateExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @param Environment $env
-     * @param mixed       $date
-     * @param null        $format
-     * @param null        $timezone
-     * @param string      $contentIfNull
-     *
-     * @return string
-     */
     public function safeDateFormatFilter(
         Environment $env,
-        $date,
-        $format = null,
-        $timezone = null,
+        mixed $date,
+        ?string $format = null,
+        ?string $timezone = null,
         string $contentIfNull = '-'
     ): string {
-        if ($date === null) {
+        if (empty($date)) {
             return $contentIfNull;
         }
 
