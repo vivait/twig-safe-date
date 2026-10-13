@@ -64,4 +64,4 @@ jobs:
                 run: composer install --prefer-dist --no-progress --no-scripts
 
             -   name: Run PHPCS
-                run: ./vendor/bin/phpcs --report=checkstyle -q ./vendor/bin/phpcs --exclude=Generic.Files.LineLength,PSR1.Files.SideEffects --standard=PSR12 --colors ./src ./tests | cs2pr
+                run: ./vendor/bin/phpcs --report=checkstyle -q --exclude=Generic.Files.LineLength,PSR1.Files.SideEffects --standard=PSR12 --colors ./src ./tests | cs2pr
